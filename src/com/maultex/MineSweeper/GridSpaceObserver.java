@@ -66,8 +66,10 @@ public class GridSpaceObserver extends MouseAdapter
 				_view.showHappyFace();
 				//reveal what is "underneath" button
 				int nMineCount = gridBtn.getGridSpace().getMinesInProximity();
-				String sMinePath = Resources.IMG_DIRECTORY + Integer.toString(nMineCount) + "Mines" + Resources.IMG_TYPE;
-				gridBtn.setIcon(new ImageIcon(sMinePath));
+				//String sMinePath = Resources.IMG_DIRECTORY + Integer.toString(nMineCount) + "Mines" + Resources.IMG_TYPE;
+				
+				ImageIcon iconInGridSpace = Resources.htNumsToMineImages.get(nMineCount);
+				gridBtn.setIcon(iconInGridSpace);
 				
 				//disable button with current icon displayed
 				gridBtn.setDisabledIcon(gridBtn.getIcon());
@@ -90,7 +92,18 @@ public class GridSpaceObserver extends MouseAdapter
 			GridSpaceButton btnGridSpace = (GridSpaceButton) evtMouse.getComponent();
 			if (btnGridSpace.getIsUncovered() == true)
 			{
-				_controller.uncoverNearGridSpaces(btnGridSpace.getButtonID());
+				int nMineCount = btnGridSpace.getGridSpace().getMinesInProximity();
+				int nGridSpacePos = btnGridSpace.getButtonID();
+				if (nMineCount > 0) 
+				{
+					// TODO get mines identified correctly, if identified correctly then uncover non-mine spaces
+					if (_controller.checkAdjacentMinesIdentified(nGridSpacePos) == false)
+					{
+						return;
+					}
+					_controller.uncoverNearGridSpaces(btnGridSpace.getButtonID());
+				}
+				
 			}
 
 		}
@@ -173,14 +186,6 @@ public class GridSpaceObserver extends MouseAdapter
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-	 */
-	public void mouseReleased(MouseEvent evtMouse) 
-	{
-		
-
-	}
 
 	/**
 	 * @param gameView

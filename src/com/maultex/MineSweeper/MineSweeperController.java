@@ -239,12 +239,40 @@ public class MineSweeperController implements Runnable
 			return;
 		}
 		int nNearMines = _gridSpaces[nPos].getMinesInProximity();
-		String sPath = Resources.IMG_DIRECTORY + nNearMines + "mines" + Resources.IMG_TYPE; //for ease of reading
-		_gridSpaceBtns[nPos].setIcon(new ImageIcon(sPath));
+		_gridSpaceBtns[nPos].setIcon(Resources.htNumsToMineImages.get(nNearMines));
 		_gridSpaceBtns[nPos].setUncovered(true);
 		getView().repaint();
-		uncoverNearGridSpaces(nPos);
+		if (nNearMines > 0)
+		{
+			return;	//if we run into spaces that are adjacent to mines, we don't uncover them
+		}
+		else
+		{
+			uncoverNearGridSpaces(nPos); //otherwise we continue uncovering spaces
+		}
 		
+	}
+	
+	/**
+	 * 
+	 * @param nGridSpacePos
+	 * @return true if the number of adjacent identified mines is
+	 * equal to the number on the uncovered grid space 
+	 */
+	protected boolean checkAdjacentMinesIdentified(int nGridSpacePos)
+	{
+		int i = nGridSpacePos;
+		int nMineCount = _gridSpaceBtns[i].getGridSpace().getMinesInProximity();
+		ImageIcon iconNearMines = (ImageIcon)_gridSpaceBtns[i].getIcon();
+		String sIconFile = iconNearMines.getDescription();
+		String sIconTestFile = Resources.htNumsToMineImages.get(nMineCount).getDescription();
+		if (sIconFile.equals(sIconTestFile))
+		{
+			uncoverNearGridSpaces(i);
+			return true;
+		}
+				
+		return false;
 	}
 	
 	/**
@@ -258,18 +286,11 @@ public class MineSweeperController implements Runnable
 		int i = nGridSpacePos;	//convenience of typing less
 
 		int nMineCount = _gridSpaceBtns[i].getGridSpace().getMinesInProximity();
-		ImageIcon iconMineCount = Resources.htMineProximity.get("" + nMineCount);
-		
-		if (nMineCount > 0) 
-		{
-			// TODO get mines identified correctly, if identified correctly then uncover non-mine spaces
-			return;
-		}
 		
 		int nRightEdge = _nWidth - 1;
 		int nLeftEdge = _nWidth;
-		int nFirstRowEnd = _nWidth - 1;
-		int nLastRowStart = _nFieldSize - _nWidth;
+		//int nFirstRowEnd = _nWidth - 1;
+		//int nLastRowStart = _nFieldSize - _nWidth;
 		
 		//count E (east) mine
 		int nEpos = i + 1;

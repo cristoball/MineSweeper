@@ -53,21 +53,31 @@ public class Resources
 	public static final ImageIcon icon8 = new ImageIcon("res/8.png");
 	public static final ImageIcon icon9 = new ImageIcon("res/9.png");
 	
-	public static Hashtable <String, ImageIcon> htMineProximity = new Hashtable();
+	public static Hashtable <ImageIcon, Integer> htMineImagesToNums = new Hashtable();
+	public static Hashtable <Integer, ImageIcon> htNumsToMineImages = new Hashtable();
 	public static Hashtable <String, ImageIcon> htDigits = new Hashtable();
 	
 	static 
 	{
-		htMineProximity.put("0", icon0Mines);
-		htMineProximity.put("1", icon1Mines);
-		htMineProximity.put("2", icon2Mines);
-		htMineProximity.put("3", icon3Mines);
-		htMineProximity.put("4", icon4Mines);
-		htMineProximity.put("5", icon5Mines);
-		htMineProximity.put("6", icon6Mines);
-		htMineProximity.put("7", icon7Mines);
-		htMineProximity.put("8", icon8Mines);
+		htMineImagesToNums.put(icon0Mines, 0 );
+		htMineImagesToNums.put(icon1Mines, 1 );
+		htMineImagesToNums.put(icon2Mines, 2 );
+		htMineImagesToNums.put(icon3Mines, 3 );
+		htMineImagesToNums.put(icon4Mines, 4 );
+		htMineImagesToNums.put(icon5Mines, 5 );
+		htMineImagesToNums.put(icon6Mines, 6 );
+		htMineImagesToNums.put(icon7Mines, 7 );
+		htMineImagesToNums.put(icon8Mines, 8 );
 		
+		htNumsToMineImages.put(0, icon0Mines);
+		htNumsToMineImages.put(1, icon1Mines);
+		htNumsToMineImages.put(2, icon2Mines);
+		htNumsToMineImages.put(3, icon3Mines);
+		htNumsToMineImages.put(4, icon4Mines);
+		htNumsToMineImages.put(5, icon5Mines);
+		htNumsToMineImages.put(6, icon6Mines);
+		htNumsToMineImages.put(7, icon7Mines);
+		htNumsToMineImages.put(8, icon8Mines);
 	}
 	
 }
