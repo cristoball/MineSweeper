@@ -25,6 +25,8 @@ import javax.swing.WindowConstants;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 
+import com.maultex.MineSweeper.BestTimesManager;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -36,47 +38,47 @@ import java.awt.LayoutManager;
  * @author Christoball
  *
  */
-public class MineSweeperView extends JFrame implements ActionListener
+public class View extends JFrame implements ActionListener
 {
-	private int _nWidth = 8;
-	private int _nHeight = 8;
-	private int _nFieldSize = _nWidth * _nHeight;
-	private int _nMines = 9;
-	private int _nRemainingMines = _nMines;
+	protected int _nWidth = 8;
+	protected int _nHeight = 8;
+	protected int _nFieldSize = _nWidth * _nHeight;
+	protected int _nMines = 9;
+	protected int _nRemainingMines = _nMines;
 	
-	private int _nTimeSec = 0;
-	private int _nTime10thSec = 0;
-	private String _sFinishTime = "0";
+	protected int _nTimeSec = 0;
+	protected int _nTime10thSec = 0;
+	protected String _sFinishTime = "0";
 	
-	private JPanel pnlMineField = new JPanel(new GridLayout(_nWidth, _nHeight));
+	protected JPanel pnlMineField = new JPanel(new GridLayout(_nWidth, _nHeight));
 
-	private	JMenuBar menuBarMain = new JMenuBar();
-	private	JMenu menuGame = new JMenu("Game");
-	private JMenuItem menuItemNewGame = new JMenuItem("New Game");
-	private JMenuItem menuItemBeginner = new JMenuItem("Beginner");
-	private JMenuItem menuItemIntermediate = new JMenuItem("Intermediate");
-	private JMenuItem menuItemExpert = new JMenuItem("Expert");
-	private JMenuItem menuItemBestTimes = new JMenuItem("Best Times");
-	private JMenuItem menuItemExit = new JMenuItem("Exit");
-	private JMenuItem menuItemAbout = new JMenuItem("About");
-	private	JMenu helpMenu = new JMenu("Help");	
+	protected JMenuBar menuBarMain = new JMenuBar();
+	protected JMenu menuGame = new JMenu("Game");
+	protected JMenuItem menuItemNewGame = new JMenuItem("New Game");
+	protected JMenuItem menuItemBeginner = new JMenuItem("Beginner");
+	protected JMenuItem menuItemIntermediate = new JMenuItem("Intermediate");
+	protected JMenuItem menuItemExpert = new JMenuItem("Expert");
+	protected JMenuItem menuItemBestTimes = new JMenuItem("Best Times");
+	protected JMenuItem menuItemExit = new JMenuItem("Exit");
+	protected JMenuItem menuItemAbout = new JMenuItem("About");
+	protected JMenu helpMenu = new JMenu("Help");	
 	
 	//MINES, FACE, CLOCK
-	private	JPanel pnlInfo = new JPanel();
-	private	JLabel lblMines1s = new JLabel("");
-	private	JLabel lblMines10s = new JLabel("");
-	private	JLabel lblMines100s = new JLabel("");
-	private	JLabel lblTime1s = new JLabel("");
-	private	JLabel lblTime10s = new JLabel("");
-	private	JLabel lblTime100s = new JLabel("");
-	private Timer _timer;
+	protected JPanel pnlInfo = new JPanel();
+	protected JLabel lblMines1s = new JLabel("");
+	protected JLabel lblMines10s = new JLabel("");
+	protected JLabel lblMines100s = new JLabel("");
+	protected JLabel lblTime1s = new JLabel("");
+	protected JLabel lblTime10s = new JLabel("");
+	protected JLabel lblTime100s = new JLabel("");
+	protected Timer _timer;
 	
-	private JButton btnFace = new JButton(Resources.iconHappyFace);
+	protected JButton btnFace = new JButton(Resources.iconHappyFace);
 	
-	private	GridSpaceButton[] _gridSpaceBtns = new GridSpaceButton[_nFieldSize];
+	protected GridSpaceButton[] _gridSpaceBtns;// = new GridSpaceButton[_nFieldSize];
 	
-	private GridSpaceObserver _actionObserver = null;
-	private GameButtonObserver _gameObserver = null;
+	protected GridSpaceObserver _actionObserver = null;
+	protected GameButtonObserver _gameObserver = null;
 	
 	/**
 	 * default constructor for view with grid size
@@ -85,7 +87,7 @@ public class MineSweeperView extends JFrame implements ActionListener
 	 * @param gameBtnObserver TODO
 	 * @param mines
 	 */
-	public MineSweeperView(int width, int height, int nMineCount, GridSpaceObserver observer, GameButtonObserver gameBtnObserver)
+	public View(int width, int height, int nMineCount, GridSpaceObserver observer, GameButtonObserver gameBtnObserver)
 	{	
 		this.setTitle(Resources.GAME_TITLE);
 		//super(" Mine Sweeper");
@@ -94,17 +96,45 @@ public class MineSweeperView extends JFrame implements ActionListener
 				
 		_nWidth = width;
 		_nHeight = height;
+		_nFieldSize = _nWidth * _nHeight;
+		_gridSpaceBtns = new GridSpaceButton[_nFieldSize];
 		_nMines = nMineCount;
 		
 		_actionObserver = observer;
 		_gameObserver = gameBtnObserver;
 		
-		buildLayout(width, height);
-		
-		
-		
+		buildLayout(width, height);	
 	}
 
+	/**
+	 * Observers of gui action on menu items
+	 * @param ctrlr
+	 */
+	protected void addBeginnerActionListener(Controller ctrlr)
+	{
+		menuItemBeginner.addActionListener(new MenuBeginnerObserver(ctrlr));
+
+	}	
+	
+	/**
+	 * Observers of gui action on menu items
+	 * @param ctrlr
+	 */
+	protected void addIntermediateActionListener(Controller ctrlr)
+	{
+		MenuIntermediateObserver observerMenu = new MenuIntermediateObserver(ctrlr);
+		menuItemIntermediate.addActionListener(new MenuIntermediateObserver(ctrlr));
+	}
+	
+	/**
+	 * Observers of gui action on menu items
+	 * @param ctrlr
+	 */
+	protected void addExpertActionListener(Controller ctrlr)
+	{
+		menuItemExpert.addActionListener(new MenuExpertObserver(ctrlr));
+	}
+	
 	/**
 	 * build the game with mines and buttons
 	 * @param width
@@ -120,7 +150,9 @@ public class MineSweeperView extends JFrame implements ActionListener
 		menuGame.add(menuItemNewGame);
 		menuGame.addSeparator(); //add menu divider
 		menuGame.add(menuItemBeginner);
+		//menuGame.addActionListener(new ActionList)
 		menuGame.add(menuItemIntermediate);
+		
 		menuGame.add(menuItemExpert);
 		menuGame.addSeparator(); //add menu divider
 		menuGame.add(menuItemBestTimes);
@@ -128,7 +160,8 @@ public class MineSweeperView extends JFrame implements ActionListener
 		{
 	        public void actionPerformed(ActionEvent actionEvent) 
 	        {
-	            BestTimes times = BestTimes.getBestTimes();
+	        	BestTimes times = BestTimesManager.getBestTimes();
+	        	
 	        	JOptionPane.showMessageDialog(null,"Beginner: " + times.getBeginnerName() + " = " + times.getBeginnerTime() + "\n\nIntermediate: \n\nExpert: \n\n");	             
 	        }
 	    });
@@ -234,11 +267,6 @@ public class MineSweeperView extends JFrame implements ActionListener
 		//this.pack();
 		
 		createNewGameView();
-		
-		//this.setMinimumSize(new Dimension(16 * width + 25, 16 * height + 60));
-		this.setMinimumSize(new Dimension(200, 305));
-		this.setResizable(false);
-		//this.setResizable(true);
 		//this.setSize(16 * width + 25, 16 * height + 50);
 		
 		
@@ -289,6 +317,10 @@ public class MineSweeperView extends JFrame implements ActionListener
 		pnlMineField.setBorder( BorderFactory.createCompoundBorder(BorderFactory.createRaisedSoftBevelBorder(), BorderFactory.createLoweredSoftBevelBorder()));
 		_gridSpaceBtns[0].requestFocus();
 		this.add(pnlMineField, BorderLayout.SOUTH);
+		//this.setMinimumSize(new Dimension(16 * width + 25, 16 * height + 60));
+		this.setMinimumSize(new Dimension(200, 305));
+		//this.setResizable(false);
+		this.setResizable(true);
 		//pack();
 	}
 	

@@ -19,9 +19,9 @@ import javax.swing.JOptionPane;
 public class GameButtonObserver extends MouseAdapter 
 {
 
-	private MineSweeperController _ctrlMineSweeper;
+	private Controller _ctrlMineSweeper;
 	
-	public GameButtonObserver(MineSweeperController mineSweeperController)
+	public GameButtonObserver(Controller mineSweeperController)
 	{
 		_ctrlMineSweeper = mineSweeperController;
 	}

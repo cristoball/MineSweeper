@@ -3,6 +3,7 @@
  */
 package com.maultex.MineSweeper;
 
+import java.io.File;
 import java.util.Hashtable;
 
 import javax.swing.ImageIcon;
@@ -52,6 +53,8 @@ public class Resources
 	public static final ImageIcon icon7 = new ImageIcon("res/7.png");
 	public static final ImageIcon icon8 = new ImageIcon("res/8.png");
 	public static final ImageIcon icon9 = new ImageIcon("res/9.png");
+	
+	public static final File fileBestTimes = new File("res/BestTimes.ser");
 	
 	public static Hashtable <ImageIcon, Integer> htMineImagesToNums = new Hashtable();
 	public static Hashtable <Integer, ImageIcon> htNumsToMineImages = new Hashtable();

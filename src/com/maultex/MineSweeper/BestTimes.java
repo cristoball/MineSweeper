@@ -3,13 +3,10 @@
  */
 package com.maultex.MineSweeper;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
+ * Stores the names and times of winners of Mine Sweeper
  * @author Christoball
  *
  */
@@ -24,54 +21,38 @@ public class BestTimes implements Serializable
 	private String _sExpertTime = "";
 	private String _sExpertName = "";
 	
-	private static BestTimes _instance = null;
+
 	
-	/**
-	 * 
-	 * @return return a single instance of the Best Times in the game
-	 */
-	public static BestTimes getBestTimes()
+	public void setExpertTime(String sName, String sTime)
 	{
-		if (_instance == null)
-		{
-			//_instance = new BestTime();
-			ObjectInputStream objectinputstream = null;
-			FileInputStream streamIn = null;
-			 try 
-			 {
-				 streamIn = new FileInputStream("res/BestTimes.ser");
-				 objectinputstream = new ObjectInputStream(streamIn);
-				 _instance = (BestTimes) objectinputstream.readObject();
-				 objectinputstream .close();
-				 streamIn.close();
-			 } 
-			 catch (Exception e) 
-			 {
-				 e.printStackTrace();
-			 }
-		}
-		return _instance;
+		this._sExpertName = sName;
+		this._sExpertTime = sTime;
 	}
 	
-	/**
-	 * Save best times to file
-	 */
-	public void saveTimes()
+	public String getExpertName()
 	{
-		ObjectOutputStream oos = null;
-		FileOutputStream fout = null;
-		try
-		{
-		        fout = new FileOutputStream("res/BestTimes.ser", false);
-		        oos = new ObjectOutputStream(fout);
-		        oos.writeObject(_instance);
-		        oos.close();
-		        fout.close();
-		} 
-		catch (Exception ex) 
-		{
-			ex.printStackTrace();
-		}
+		return this._sExpertName;
+	}
+	
+	public String getExpertTime()
+	{
+		return this._sExpertTime;
+	}		
+	
+	public void setIntermediateTime(String sName, String sTime)
+	{
+		this._sIntermediateName = sName;
+		this._sIntermediateTime = sTime;
+	}
+	
+	public String getIntermediateName()
+	{
+		return this._sIntermediateName;
+	}
+	
+	public String getIntermediateTime()
+	{
+		return this._sIntermediateTime;
 	}
 	
 	public void setBeginnerTime(String sName, String sTime)
@@ -88,14 +69,5 @@ public class BestTimes implements Serializable
 	public String getBeginnerTime()
 	{
 		return this._sBeginnerTime;
-	}
-	
-	public static void main(String[] args)
-	{
-		BestTimes times = BestTimes.getBestTimes();
-		System.out.println(times._sBeginnerName + "\n");
-		System.out.println(times._sBeginnerTime + "\n");
-		
-		
-	}
+	}	
 }

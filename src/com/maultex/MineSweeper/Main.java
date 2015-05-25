@@ -46,7 +46,7 @@ public class Main
 
 	public static void runMineSweeper(int width, int height, int nMines)
 	{
-		MineSweeperController controller = new MineSweeperController(width, height, nMines);
+		Controller controller = new Controller(width, height, nMines);
 		controller.newGame();
 		
 	}

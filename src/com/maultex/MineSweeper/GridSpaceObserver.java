@@ -20,11 +20,11 @@ import javax.swing.JOptionPane;
  */
 public class GridSpaceObserver extends MouseAdapter
 {
-	private MineSweeperController _controller;
-	private MineSweeperView _view;
+	private Controller _controller;
+	private View _view;
 	private boolean _bStartedTimer = false;
 	
-	public GridSpaceObserver(MineSweeperController msController, MineSweeperView msView)
+	public GridSpaceObserver(Controller msController, View msView)
 	{
 		_controller = msController;
 		_view = msView;
@@ -190,7 +190,7 @@ public class GridSpaceObserver extends MouseAdapter
 	/**
 	 * @param gameView
 	 */
-	public void setView(MineSweeperView gameView) 
+	public void setView(View gameView) 
 	{
 		this._view = gameView;
 		
@@ -199,7 +199,7 @@ public class GridSpaceObserver extends MouseAdapter
 	/**
 	 * @param mineSweeperController
 	 */
-	public void setController(MineSweeperController mineSweeperController) 
+	public void setController(Controller mineSweeperController) 
 	{
 		this._controller = mineSweeperController;
 		

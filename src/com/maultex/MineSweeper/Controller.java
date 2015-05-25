@@ -14,7 +14,7 @@ import javax.swing.WindowConstants;
  * @author Christoball
  *
  */
-public class MineSweeperController implements Runnable
+public class Controller implements Runnable
 {
 
 	private int _nMines = 9;
@@ -30,7 +30,7 @@ public class MineSweeperController implements Runnable
 	
 	private GridSpaceObserver _actionObserver = null;
 	private GameButtonObserver _gameObserver = null;
-	private MineSweeperView _view;	
+	private View _view;	
 	
 	private boolean _bUserStarted = false;
 	
@@ -39,12 +39,13 @@ public class MineSweeperController implements Runnable
 	 * @param height
 	 * @param _nMines
 	 */
-	public MineSweeperController(int width, int height, int mines) 
+	public Controller(int width, int height, int mines) 
 	{
 		_nMines = mines;
 		_nWidth = width;
 		_nHeight = height;
 		_nFieldSize = _nWidth*_nHeight;
+		Settings.PLAYER_LEVEL = Settings.BEGINNER;
 	}
 
 	/**
@@ -55,10 +56,9 @@ public class MineSweeperController implements Runnable
 
 		_actionObserver = new GridSpaceObserver(this, _view);  //glue for MVC
 		_gameObserver = new GameButtonObserver(this);
-		setView(new MineSweeperView(_nWidth, _nHeight, _nMines, _actionObserver, _gameObserver));
+		setView();
 
     	assignMines();
-    	
     	
         _actionObserver.setView(_view);
         _actionObserver.setController(this);
@@ -67,11 +67,54 @@ public class MineSweeperController implements Runnable
 	}
 	
 	/**
+	 * @param gameView the gameView to set
+	 */
+	public void setView() 
+	{
+		if (Settings.PLAYER_LEVEL == Settings.BEGINNER)
+		{
+			_nWidth = 8;
+			_nHeight = 8;
+			_nFieldSize = _nWidth*_nHeight;
+			_nMines = 9;
+			_view = new View(_nWidth, _nHeight, _nMines, _actionObserver, _gameObserver);
+			_view.addBeginnerActionListener(this);
+			_view.addIntermediateActionListener(this);
+			_view.addExpertActionListener(this);
+		}
+		
+		if (Settings.PLAYER_LEVEL == Settings.INTERMEDIATE)
+		{
+			_nWidth = 16;
+			_nHeight = 16;
+			_nFieldSize = _nWidth*_nHeight;
+			_nMines = 40;
+			_view = new IntermediateView(_nWidth, _nHeight, _nMines, _actionObserver, _gameObserver);
+			_view.addBeginnerActionListener(this);
+			_view.addIntermediateActionListener(this);
+			_view.addExpertActionListener(this);			
+		}
+		if (Settings.PLAYER_LEVEL == Settings.EXPERT)
+		{
+			_nWidth = 16;
+			_nHeight = 30;
+			_nFieldSize = _nWidth*_nHeight;
+			_nMines = 99;
+			_view = new ExpertView(_nWidth, _nHeight, _nMines, _actionObserver, _gameObserver);
+			_view.addBeginnerActionListener(this);
+			_view.addIntermediateActionListener(this);
+			_view.addExpertActionListener(this);			
+		}		
+	}	
+	
+	
+	/**
 	 * Start a new swing window thread
 	 */
 	public void newGame()
 	{
-        if (this._view != null)
+		//_nFieldSize = _nWidth*_nHeight;
+		if (this._view != null)
         {
         	_view.setVisible(false);
         	_view = null;
@@ -79,9 +122,6 @@ public class MineSweeperController implements Runnable
 		SwingUtilities.invokeLater(new Thread(this));
 		//run();
 	}
-	
-	
-	
 	
 	
 	/**
@@ -126,24 +166,14 @@ public class MineSweeperController implements Runnable
 		setNearMineCount();
 	}
 	
-
-
-
 	/**
 	 * @return the gameView
 	 */
-	public MineSweeperView getView() 
+	public View getView() 
 	{
 		return _view;
 	}
 
-	/**
-	 * @param gameView the gameView to set
-	 */
-	public void setView(MineSweeperView gameView) 
-	{
-		_view = gameView;
-	}
 
 	/**
 	 * Game Over occurs when the player has clicked (with Button 1) on a space in 
