@@ -107,6 +107,15 @@ public class View extends JFrame implements ActionListener
 	}
 
 	/**
+	 * Observes clicks on the New menu item
+	 * @param ctrlr
+	 */
+	protected void addNewGameActionListener(Controller ctrlr)
+	{
+		menuItemNewGame.addActionListener(new MenuNewObserver(ctrlr));
+	}
+	
+	/**
 	 * Observers of gui action on menu items
 	 * @param ctrlr
 	 */

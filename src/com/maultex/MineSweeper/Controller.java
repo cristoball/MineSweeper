@@ -104,7 +104,8 @@ public class Controller implements Runnable
 			_view.addBeginnerActionListener(this);
 			_view.addIntermediateActionListener(this);
 			_view.addExpertActionListener(this);			
-		}		
+		}
+		_view.addNewGameActionListener(this);
 	}	
 	
 	
