@@ -171,7 +171,9 @@ public class View extends JFrame implements ActionListener
 	        {
 	        	BestTimes times = BestTimesManager.getBestTimes();
 	        	
-	        	JOptionPane.showMessageDialog(null,"Beginner: " + times.getBeginnerName() + " = " + times.getBeginnerTime() + "\n\nIntermediate: \n\nExpert: \n\n");	             
+	        	JOptionPane.showMessageDialog(null,"Beginner: " + times.getBeginnerName() + " = " + times.getBeginnerTime() + 
+	        			"\n\nIntermediate: " + times.getIntermediateName() + " = " + times.getIntermediateTime() + 
+	        			"\n\nExpert: " + times.getExpertName() + " = " + times.getExpertTime() + "\n\n");	             
 	        }
 	    });
 		menuGame.addSeparator();
@@ -522,7 +524,9 @@ public class View extends JFrame implements ActionListener
 	public void showWinningTime(String sTime) 
 	{
 		String sName = JOptionPane.showInputDialog(Resources.WINNING_MESSAGE + sTime);
-		// TODO: store names and times
+		SaveTime saveNewTime = SaveTimeFactory.getTimeSaver(Settings.PLAYER_LEVEL);
+		saveNewTime.saveTime(sName, _sFinishTime);
+		
 	}
 	
 	

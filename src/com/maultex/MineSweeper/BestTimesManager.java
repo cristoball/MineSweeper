@@ -33,13 +33,25 @@ public class BestTimesManager
 			 {
 				 streamIn = new FileInputStream(Resources.fileBestTimes);
 				 objectinputstream = new ObjectInputStream(streamIn);
-				 _instance = (BestTimes) objectinputstream.readObject();
+				 
+				 try
+				 {
+					 _instance = (BestTimes) objectinputstream.readObject();
+				 }
+				 catch (Exception ex)
+				 {
+					 ex.printStackTrace();
+				 }
 				 objectinputstream .close();
 				 streamIn.close();
 			 } 
 			 catch (Exception e) 
 			 {
 				 e.printStackTrace();
+			 }
+			 if (_instance == null)
+			 {
+				 _instance = new BestTimes();
 			 }
 		}
 		return _instance;
@@ -60,7 +72,8 @@ public class BestTimesManager
 	public static void saveTimes()
 	{
 		BestTimes times = new BestTimes();
-		times.setBeginnerTime("Chris", "30.105");
+		
+		
 		ObjectOutputStream oos = null;
 		FileOutputStream fout = null;
 		try
@@ -80,9 +93,20 @@ public class BestTimesManager
 	
 	public static void main(String[] args)
 	{
+		BestTimes bestTimes = BestTimesManager.getInstance();
+		bestTimes.setBeginnerTime("Chris", "30.105");
+		bestTimes.setIntermediateTime("Chris", "66.143");
+		bestTimes.setExpertTime("Chris", "233.347");
+		
 		BestTimesManager.saveTimes();
-		//System.out.println(times.getBeginnerName() + "\n");
-		//System.out.println(times.getBeginnerTime() + "\n");
+		BestTimesManager.getBestTimes();
+		
+		System.out.println(bestTimes.getBeginnerName() + "\n");
+		System.out.println(bestTimes.getBeginnerTime() + "\n");
+		System.out.println(bestTimes.getIntermediateName() + "\n");
+		System.out.println(bestTimes.getIntermediateTime() + "\n");
+		System.out.println(bestTimes.getExpertName() + "\n");
+		System.out.println(bestTimes.getExpertTime() + "\n");
 	}
 }
 

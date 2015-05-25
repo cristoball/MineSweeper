@@ -5,6 +5,7 @@ package com.maultex.MineSweeper;
 
 import java.io.Serializable;
 
+
 /**
  * Stores the names and times of winners of Mine Sweeper
  * @author Christoball
@@ -69,5 +70,10 @@ public class BestTimes implements Serializable
 	public String getBeginnerTime()
 	{
 		return this._sBeginnerTime;
-	}	
+	}
+	
+	public static void main(String[] args)
+	{
+	
+	}
 }
