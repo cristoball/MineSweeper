@@ -3,6 +3,8 @@
  */
 package com.maultex.MineSweeper;
 
+import java.awt.List;
+
 /**
  * @author Christoball
  *
@@ -14,6 +16,17 @@ public class GridSpace
 	private int _nMinesNear = 0;
 	private boolean _isDisarmed = false;
 	private boolean _bPossibleMine = false;
+	private List lstNearMinePos = new List();
+	
+	public List getNearMinesList()
+	{
+		return lstNearMinePos;
+	}
+	
+	public void  addNearMinesPos(List lst)
+	{
+		lstNearMinePos = lst;
+	}
 	
 	public boolean getIsMine()
 	{
@@ -57,7 +70,7 @@ public class GridSpace
 		this._isDisarmed = bDisarmed;
 	}
 	
-	public void setMinesInProximity(int nMineCount)
+	public void setMineCountNear(int nMineCount)
 	{
 		_nMinesNear = nMineCount;
 	}

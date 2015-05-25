@@ -168,7 +168,7 @@ public class GridSpaceObserver extends MouseAdapter
 				btnsGrid[i].removeMouseListener(lstnrMouse[j]);
 			}
 		}
-		this._controller.gameOver();
+		//this._controller.gameOver();
 			
 	}
 	

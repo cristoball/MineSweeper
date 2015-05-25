@@ -3,6 +3,8 @@
  */
 package com.maultex.MineSweeper;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -189,14 +191,6 @@ public class Controller implements Runnable
 
 	
 	/**
-	 * 
-	 */
-	protected void gameOver()
-	{
-		
-	}
-	
-	/**
 	 * Checks each space (game board) to see if all mines are identified correctly
 	 * and if other spaces are uncovered
 	 */
@@ -299,6 +293,26 @@ public class Controller implements Runnable
 		String sIconTestFile = Resources.htNumsToMineImages.get(nMineCount).getDescription();
 		if (sIconFile.equals(sIconTestFile))
 		{
+			List lstNearMines = _gridSpaceBtns[i].getGridSpace().getNearMinesList();
+			if (lstNearMines.getItemCount() != nMineCount)
+			{
+				return false;
+			}
+			else
+			{
+				//here we loop over the buttons to make sure they have been
+				//identified before we uncover any adjacent mines
+				int nNearMineCount = lstNearMines.getItemCount();
+				for (int j = 0; j < lstNearMines.getItemCount(); j++)
+				{
+					String sPos = lstNearMines.getItem(j);
+					int nPos = Integer.parseInt(sPos);
+					if (_gridSpaceBtns[nPos].getIsIdentified() == false)
+					{
+						return false;
+					}
+				}
+			}
 			uncoverNearGridSpaces(i);
 			return true;
 		}
@@ -393,13 +407,13 @@ public class Controller implements Runnable
 		
 		int nRightEdge = _nWidth - 1;
 		int nLeftEdge = _nWidth;
-		int nFirstRowEnd = _nWidth - 1;
-		int nLastRowStart = _nFieldSize - _nWidth;
 		
 		//count each adjacent mine
+		
 		for (int i = 0; i < _nFieldSize; i++)
 		{
 			nMineCount = 0; //reset mine count
+			List lstNearMinePos = new List(); //reset list
 			
 			//count E (east) mine
 			int nEpos = i + 1;
@@ -408,6 +422,7 @@ public class Controller implements Runnable
 				if (_gridSpaces[nEpos].getIsMine() == true)
 				{
 					nMineCount++;
+					lstNearMinePos.add(nEpos + "");
 				}
 			}
 			
@@ -418,6 +433,7 @@ public class Controller implements Runnable
 				if (_gridSpaces[nNEpos].getIsMine() == true)
 				{
 					nMineCount++;
+					lstNearMinePos.add(nNEpos + "");
 				}
 			}
 			
@@ -428,6 +444,7 @@ public class Controller implements Runnable
 				if (_gridSpaces[nSEpos].getIsMine() == true)
 				{
 					nMineCount++;
+					lstNearMinePos.add(nSEpos + "");
 				}
 			}
 			
@@ -438,6 +455,7 @@ public class Controller implements Runnable
 				if (_gridSpaces[nWpos].getIsMine() == true)
 				{
 					nMineCount++;
+					lstNearMinePos.add(nWpos + "");
 				}
 			}			
 			
@@ -447,6 +465,7 @@ public class Controller implements Runnable
 			if (_gridSpaces[nNWpos].getIsMine() == true)
 			{
 				nMineCount++;
+				lstNearMinePos.add(nNWpos + "");
 			}
 
 			//count SW mine
@@ -456,6 +475,7 @@ public class Controller implements Runnable
 				if (_gridSpaces[nSWpos].getIsMine() == true)
 				{
 					nMineCount++;
+					lstNearMinePos.add(nSWpos + "");
 				}
 			}
 			
@@ -466,6 +486,7 @@ public class Controller implements Runnable
 				if (_gridSpaces[nNpos].getIsMine() == true)
 				{
 					nMineCount++;
+					lstNearMinePos.add(nNpos + "");
 				}
 			}			
 			
@@ -476,9 +497,11 @@ public class Controller implements Runnable
 				if (_gridSpaces[nSpos].getIsMine() == true)
 				{
 					nMineCount++;
+					lstNearMinePos.add(nSpos + "");
 				}			
 			}
-			_gridSpaces[i].setMinesInProximity(nMineCount);
+			_gridSpaces[i].setMineCountNear(nMineCount);
+			_gridSpaces[i].addNearMinesPos(lstNearMinePos);
 		}
 		
 		return nMineCount;

@@ -3,7 +3,6 @@
  */
 package com.maultex.MineSweeper;
 
-import javax.swing.JOptionPane;
 
 /**
  * Determines which time to be saved: Beginner, Intermediate, or Expert
